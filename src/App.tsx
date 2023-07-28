@@ -43,7 +43,7 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="title">Arda v CORS Round 82791</h1>
+      <h1 className="title">summer</h1>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="carReg" className="label">
