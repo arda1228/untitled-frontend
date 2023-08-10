@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './App.css'; // Import the CSS file
+import './App.css';
 
 interface FormData {
-  carReg: string;
+  carSize: string;
+  fuelType: string;
   startingPoint: string;
   destination: string;
 }
 
 const App: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    carReg: '',
+    carSize: '',
+    fuelType: '',
     startingPoint: '',
     destination: '',
   });
@@ -23,11 +25,10 @@ const App: React.FC = () => {
 
     try {
       const response = await axios.post(process.env.REACT_APP_API_URL!, formData);
-      setResponseMessage(response.data); // Save the response data to the state
-
-      // Reset the form
+      setResponseMessage(response.data);
       setFormData({
-        carReg: '',
+        carSize: '',
+        fuelType: '',
         startingPoint: '',
         destination: '',
       });
@@ -43,14 +44,13 @@ const App: React.FC = () => {
           Accept: 'application/json',
         },
       });
-
       setDadJoke(response.data.joke);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -60,20 +60,46 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="title">summer</h1>
+      <h1 className="title">pt vs driving</h1>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
-          <label htmlFor="carReg" className="label">
-            Car Registration:
+          <label htmlFor="carSize" className="label">
+            Car Size:
           </label>
-          <input
-            type="text"
-            id="carReg"
-            name="carReg"
-            value={formData.carReg}
+          <select
+            id="carSize"
+            name="carSize"
+            value={formData.carSize}
             onChange={handleChange}
             className="input"
-          />
+          >
+            <option value="">Select Car Size</option>
+            <option value="normal">Normal</option>
+            <option value="small">Small</option>
+            <option value="large">Large</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="fuelType" className="label">
+            Fuel Type:
+          </label>
+          <select
+            id="fuelType"
+            name="fuelType"
+            value={formData.fuelType}
+            onChange={handleChange}
+            className="input"
+          >
+            <option value="">Select Fuel Type</option>
+            <option value="gasoline">Gasoline</option>
+            <option value="bio-diesel">Bio Diesel</option>
+            <option value="diesel">Diesel</option>
+            <option value="electricity">Electricity</option>
+            <option value="fossil-gas">Fossil Gas</option>
+            <option value="natural-gas">Natural Gas</option>
+            <option value="bio-gas">Bio Gas</option>
+            <option value="ethanol">Ethanol</option>
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="startingPoint" className="label">
