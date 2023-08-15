@@ -26,12 +26,6 @@ const App: React.FC = () => {
     try {
       const response = await axios.post(process.env.REACT_APP_API_URL!, formData);
       setResponseMessage(response.data);
-      setFormData({
-        carSize: '',
-        fuelType: '',
-        startingPoint: '',
-        destination: '',
-      });
     } catch (error) {
       console.error(error);
     }
@@ -92,13 +86,8 @@ const App: React.FC = () => {
           >
             <option value="">Select Fuel Type</option>
             <option value="gasoline">Gasoline</option>
-            <option value="bio-diesel">Bio Diesel</option>
             <option value="diesel">Diesel</option>
             <option value="electricity">Electricity</option>
-            <option value="fossil-gas">Fossil Gas</option>
-            <option value="natural-gas">Natural Gas</option>
-            <option value="bio-gas">Bio Gas</option>
-            <option value="ethanol">Ethanol</option>
           </select>
         </div>
         <div className="form-group">
@@ -132,10 +121,9 @@ const App: React.FC = () => {
         </button>
       </form>
 
-      {responseMessage && <p className="response">{responseMessage}</p>}
-
       <button onClick={handleFetchDadJoke}>Get Dad Joke</button>
       {dadJoke && <p className="dad-joke">{dadJoke}</p>}
+      {responseMessage && <p className="response">{responseMessage}</p>}
     </div>
   );
 };
