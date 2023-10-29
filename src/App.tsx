@@ -121,11 +121,12 @@ const App: React.FC = () => {
             value={formData.startingPoint}
             onChange={handleChange}
             className="input"
+            placeholder="e.g. RG10 9NY"
           />
         </div>
         <div className="form-group">
           <label htmlFor="destination" className="label">
-            Destination:
+            Destination Postcode:
           </label>
           <input
             type="text"
@@ -134,11 +135,12 @@ const App: React.FC = () => {
             value={formData.destination}
             onChange={handleChange}
             className="input"
+            placeholder="e.g. RG10 9NY"
           />
         </div>
 
-        <button onClick={handleToggleAdvancedOptions}>
-          {showAdvancedOptions ? 'Hide Advanced Options' : 'Show Advanced Options'}
+        <button className="toggle-button" onClick={handleToggleAdvancedOptions}>
+          {showAdvancedOptions ? 'Hide Advanced Options ▲' : 'Show Advanced Options ▼'}
         </button>
 
         {showAdvancedOptions ? ( // Show additional fields if showAdvancedOptions is true
@@ -154,11 +156,12 @@ const App: React.FC = () => {
                 value={formData.fuelPrice}
                 onChange={handleChange}
                 className="input"
+                placeholder="e.g. 1.29"
               />
             </div>
             <div className="form-group">
               <label htmlFor="fuelEfficiency" className="label">
-                Fuel Efficiency (km per litre):
+                Fuel Efficiency (KM per Litre):
               </label>
               <input
                 type="text"
@@ -167,11 +170,12 @@ const App: React.FC = () => {
                 value={formData.fuelEfficiency}
                 onChange={handleChange}
                 className="input"
+                placeholder="e.g. 43"
               />
             </div>
             <div className="form-group">
               <label htmlFor="yearlyInsurance" className="label">
-                Yearly Insurance Price:
+                Yearly Insurance Price (£):
               </label>
               <input
                 type="text"
@@ -180,6 +184,7 @@ const App: React.FC = () => {
                 value={formData.yearlyInsurance}
                 onChange={handleChange}
                 className="input"
+                placeholder="e.g. 800"
               />
             </div>
           </div>
