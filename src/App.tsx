@@ -24,29 +24,37 @@ const App: React.FC = () => {
   });
 
   const [responseMessage, setResponseMessage] = useState<string>('');
-  const [dadJoke, setDadJoke] = useState<string>('');
+  const [error, setError] = useState<string>(''); // Add error state
 
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false); // State to manage advanced options visibility
+
+  const validatePostcode = async (postcode: string) => {
+    try {
+      const response = await axios.get(`https://api.postcodes.io/postcodes/${postcode}/validate`);
+      return response.data.result;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Check if the startingPoint and destination are valid postcodes
+    const isStartingPointValid = await validatePostcode(formData.startingPoint);
+    const isDestinationValid = await validatePostcode(formData.destination);
+
+    if (!isStartingPointValid || !isDestinationValid) {
+      setError('Please enter valid postcodes for starting point and destination.');
+      return;
+    } else {
+      setError(''); // Clear the error if valid postcodes are provided
+    }
+
     try {
       const response = await axios.post(process.env.REACT_APP_API_URL!, formData);
       setResponseMessage(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleFetchDadJoke = async () => {
-    try {
-      const response = await axios.get('https://icanhazdadjoke.com/', {
-        headers: {
-          Accept: 'application/json',
-        },
-      });
-      setDadJoke(response.data.joke);
     } catch (error) {
       console.error(error);
     }
@@ -66,7 +74,7 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="title">pt vs. DRIVING</h1> 
+      <h1 className="title">pt vs. DRIVING</h1>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="carSize" className="label">
@@ -129,6 +137,10 @@ const App: React.FC = () => {
           />
         </div>
 
+        <button onClick={handleToggleAdvancedOptions}>
+          {showAdvancedOptions ? 'Hide Advanced Options' : 'Show Advanced Options'}
+        </button>
+
         {showAdvancedOptions ? ( // Show additional fields if showAdvancedOptions is true
           <div>
             <div className="form-group">
@@ -176,14 +188,9 @@ const App: React.FC = () => {
         <button type="submit" className="submit-btn">
           Submit
         </button>
+        {error && <div className="error-message">{error}</div>} {/* Display error message */}
       </form>
 
-      <button onClick={handleToggleAdvancedOptions}>
-        {showAdvancedOptions ? 'Hide Advanced Options' : 'Show Advanced Options'}
-      </button>
-
-      <button onClick={handleFetchDadJoke}>Get Dad Joke</button>
-      {dadJoke && <p className="dad-joke">{dadJoke}</p>}
       {responseMessage && <p className="response">{responseMessage}</p>}
     </div>
   );
