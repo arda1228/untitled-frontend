@@ -74,7 +74,7 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="title">pt vs. DRIVING</h1>
+      <h1 className="title">Public Transport Application</h1>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="carSize" className="label">
@@ -139,15 +139,19 @@ const App: React.FC = () => {
           />
         </div>
 
-        <button className="toggle-button" onClick={handleToggleAdvancedOptions}>
-          {showAdvancedOptions ? 'Hide Advanced Options ▲' : 'Show Advanced Options ▼'}
-        </button>
+        <button
+          className="toggle-button"
+  onClick={handleToggleAdvancedOptions}
+  style={{ marginBottom: '16px' }} // Add margin to the bottom
+>
+  {showAdvancedOptions ? 'Hide Advanced Options ▲' : 'Show Advanced Options ▼'}
+</button>
 
         {showAdvancedOptions ? ( // Show additional fields if showAdvancedOptions is true
           <div>
             <div className="form-group">
               <label htmlFor="fuelPrice" className="label">
-                Fuel Price per Litre:
+                Fuel Price (£ per Litre):
               </label>
               <input
                 type="text"
@@ -161,7 +165,7 @@ const App: React.FC = () => {
             </div>
             <div className="form-group">
               <label htmlFor="fuelEfficiency" className="label">
-                Fuel Efficiency (KM per Litre):
+                Fuel Efficiency (KM per Litre or kWh):
               </label>
               <input
                 type="text"
