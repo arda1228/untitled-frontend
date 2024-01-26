@@ -74,7 +74,7 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="title">Public Transport Application</h1>
+      <h1 className="title">Transit!</h1>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="carSize" className="label">
