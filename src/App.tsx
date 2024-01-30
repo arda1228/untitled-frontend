@@ -1,4 +1,3 @@
-// Import the necessary modules
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -39,6 +38,16 @@ const App: React.FC = () => {
     }
   };
 
+  const convertPostcodeToCoordinates = async (postcode: string) => {
+    try {
+      const response = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`);
+      return [response.data.result.latitude, response.data.result.longitude];
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -54,9 +63,17 @@ const App: React.FC = () => {
     }
 
     try {
-      // Call a function to get the route between two postcodes
-      const route = await getRouteBetweenPostcodes(formData.startingPoint, formData.destination);
-      
+      // Convert postcodes to coordinates
+      const startingPointCoordinates = await convertPostcodeToCoordinates(formData.startingPoint);
+      const destinationCoordinates = await convertPostcodeToCoordinates(formData.destination);
+
+      if (!startingPointCoordinates || !destinationCoordinates) {
+        throw new Error('Failed to convert postcodes to coordinates.');
+      }
+
+      // Call a function to get the route between two coordinates
+      const route = await getRouteBetweenCoordinates(startingPointCoordinates, destinationCoordinates);
+
       // Display route information
       console.log('Route:', route);
       setResponseMessage('Route displayed successfully!');
@@ -65,36 +82,27 @@ const App: React.FC = () => {
     }
   };
 
-  // Function to get the route between two postcodes
-const getRouteBetweenPostcodes = async (postcode1: string, postcode2: string) => {
-  try {
+  // Function to get the route between two coordinates
+  const getRouteBetweenCoordinates = async (startingPointCoordinates: number[], destinationCoordinates: number[]) => {
+    try {
       // Make a request to the TomTom Routing API to get the route
       const response = await axios.get(
-          `https://api.tomtom.com/routing/1/calculateRoute/${postcode1}:${postcode2}/json`,
-          {
-              params: {
-                  key: process.env.REACT_APP_TOMTOM_API_KEY,
-                  travelMode: 'car', // Specify travel mode (car, pedestrian, etc.)
-              }
+        `https://api.tomtom.com/routing/1/calculateRoute/${startingPointCoordinates.join(',')}:${destinationCoordinates.join(',')}/json`,
+        {
+          params: {
+            key: process.env.REACT_APP_TOMTOM_API_KEY,
+            travelMode: 'car', // Specify travel mode (car, pedestrian, etc.)
           }
+        }
       );
 
       // Extract and return route details from the response
       return response.data.routes[0];
     } catch (error: any) {
-      if (error.response && error.response.data && error.response.data.error && error.response.data.error.message) {
-          console.error('Error fetching route:', error.response.data.error.message);
-          throw new Error('Error fetching route: ' + error.response.data.error.message);
-      } else if (error.message) {
-          console.error('Error fetching route:', error.message);
-          throw new Error('Error fetching route: ' + error.message);
-      } else {
-          console.error('Unknown error occurred while fetching route.');
-          throw new Error('Unknown error occurred while fetching route.');
-      }
-  }
-};
-
+      console.error('Error fetching route:', error.message);
+      throw new Error('Error fetching route: ' + error.message);
+    }
+  };
 
   const handleToggleAdvancedOptions = () => {
     setShowAdvancedOptions((prevShowAdvancedOptions) => !prevShowAdvancedOptions);
