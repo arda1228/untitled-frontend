@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import './App.css';
 
 interface FormData {
@@ -25,6 +27,7 @@ const App: React.FC = () => {
 
   const [responseMessage, setResponseMessage] = useState<string>('');
   const [error, setError] = useState<string>(''); // Add error state
+  const [map, setMap] = useState<L.Map | null>(null);
 
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false); // State to manage advanced options visibility
 
@@ -74,9 +77,11 @@ const App: React.FC = () => {
       // Call a function to get the route between two coordinates
       const route = await getRouteBetweenCoordinates(startingPointCoordinates, destinationCoordinates);
 
-      // Display route information
-      console.log('Route:', route);
-      setResponseMessage('Route displayed successfully!');
+      // Display route on map
+      displayRouteOnMap(route);
+      
+      // Set response message from Lambda function
+      setResponseMessage(route.summary || 'Route displayed successfully!');
     } catch (error) {
       console.error(error);
     }
@@ -114,6 +119,27 @@ const App: React.FC = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  useEffect(() => {
+    if (!map) {
+      const mapInstance = L.map('map').setView([51.505, -0.09], 13); // Default center and zoom level
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(mapInstance);
+      setMap(mapInstance);
+    }
+  }, [map]); // Run whenever the map state changes
+
+  const displayRouteOnMap = (route: any) => {
+    if (!map) {
+      console.error('Map is not initialized yet');
+      return;
+    }
+
+    const coordinates = route.locations.map((location: any) => L.latLng(location.latitude, location.longitude));
+    const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
+    map.fitBounds(polyline.getBounds());
   };
 
   return (
@@ -243,6 +269,8 @@ const App: React.FC = () => {
         </button>
         {error && <div className="error-message">{error}</div>} {/* Display error message */}
       </form>
+
+      <div id="map" className="map"></div>
 
       {responseMessage && <p className="response">{responseMessage}</p>}
     </div>
