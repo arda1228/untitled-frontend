@@ -1,3 +1,4 @@
+// Import the necessary modules
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -53,12 +54,47 @@ const App: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(process.env.REACT_APP_API_URL!, formData);
-      setResponseMessage(response.data);
+      // Call a function to get the route between two postcodes
+      const route = await getRouteBetweenPostcodes(formData.startingPoint, formData.destination);
+      
+      // Display route information
+      console.log('Route:', route);
+      setResponseMessage('Route displayed successfully!');
     } catch (error) {
       console.error(error);
     }
   };
+
+  // Function to get the route between two postcodes
+const getRouteBetweenPostcodes = async (postcode1: string, postcode2: string) => {
+  try {
+      // Make a request to the TomTom Routing API to get the route
+      const response = await axios.get(
+          `https://api.tomtom.com/routing/1/calculateRoute/${postcode1}:${postcode2}/json`,
+          {
+              params: {
+                  key: process.env.REACT_APP_TOMTOM_API_KEY,
+                  travelMode: 'car', // Specify travel mode (car, pedestrian, etc.)
+              }
+          }
+      );
+
+      // Extract and return route details from the response
+      return response.data.routes[0];
+    } catch (error: any) {
+      if (error.response && error.response.data && error.response.data.error && error.response.data.error.message) {
+          console.error('Error fetching route:', error.response.data.error.message);
+          throw new Error('Error fetching route: ' + error.response.data.error.message);
+      } else if (error.message) {
+          console.error('Error fetching route:', error.message);
+          throw new Error('Error fetching route: ' + error.message);
+      } else {
+          console.error('Unknown error occurred while fetching route.');
+          throw new Error('Unknown error occurred while fetching route.');
+      }
+  }
+};
+
 
   const handleToggleAdvancedOptions = () => {
     setShowAdvancedOptions((prevShowAdvancedOptions) => !prevShowAdvancedOptions);
@@ -141,11 +177,11 @@ const App: React.FC = () => {
 
         <button
           className="toggle-button"
-  onClick={handleToggleAdvancedOptions}
-  style={{ marginBottom: '16px' }} // Add margin to the bottom
->
-  {showAdvancedOptions ? 'Hide Advanced Options ▲' : 'Show Advanced Options ▼'}
-</button>
+          onClick={handleToggleAdvancedOptions}
+          style={{ marginBottom: '16px' }} // Add margin to the bottom
+        >
+          {showAdvancedOptions ? 'Hide Advanced Options ▲' : 'Show Advanced Options ▼'}
+        </button>
 
         {showAdvancedOptions ? ( // Show additional fields if showAdvancedOptions is true
           <div>
