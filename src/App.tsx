@@ -74,7 +74,7 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="title">TRANSIT!</h1>
+      <h1 className="title">A Cloud-Native Web Application to Reduce Car Dependency</h1>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="carSize" className="label">
