@@ -88,8 +88,8 @@ const App: React.FC = () => {
             className="input"
           >
             <option value="">Select Car Size</option>
-            <option value="normal">Normal</option>
             <option value="small">Small</option>
+            <option value="normal">Normal</option>
             <option value="large">Large</option>
           </select>
         </div>
@@ -112,7 +112,7 @@ const App: React.FC = () => {
         </div>
         <div className="form-group">
           <label htmlFor="startingPoint" className="label">
-            Starting Point:
+            Starting Postcode:
           </label>
           <input
             type="text"
