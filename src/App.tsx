@@ -184,7 +184,7 @@ const App: React.FC = () => {
         {error && <div className="error-message">{error}</div>} {/* Display error message */}
       </form>
 
-      {responseMessage && <p className="response">{responseMessage}</p>}
+      {responseMessage && <p className="response-message">{responseMessage}</p>}
     </div>
   );
 };
