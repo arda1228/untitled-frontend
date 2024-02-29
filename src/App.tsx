@@ -7,7 +7,6 @@ interface FormData {
   fuelType: string;
   startingPoint: string;
   destination: string;
-  fuelPrice: string; // New field for fuel price per litre
   fuelEfficiency: string; // New field for fuel efficiency in kilometers per litre
   yearlyInsurance: string; // New field for yearly insurance price
 }
@@ -18,7 +17,6 @@ const App: React.FC = () => {
     fuelType: '',
     startingPoint: '',
     destination: '',
-    fuelPrice: '', // Initialize new fields
     fuelEfficiency: '',
     yearlyInsurance: '',
   });
@@ -149,20 +147,6 @@ const App: React.FC = () => {
 
         {showAdvancedOptions ? ( // Show additional fields if showAdvancedOptions is true
           <div>
-            <div className="form-group">
-              <label htmlFor="fuelPrice" className="label">
-                Fuel Price (£ per Litre):
-              </label>
-              <input
-                type="text"
-                id="fuelPrice"
-                name="fuelPrice"
-                value={formData.fuelPrice}
-                onChange={handleChange}
-                className="input"
-                placeholder="e.g. 1.29"
-              />
-            </div>
             <div className="form-group">
               <label htmlFor="fuelEfficiency" className="label">
                 Fuel Efficiency (KM per Litre or kWh):
