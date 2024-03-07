@@ -58,6 +58,14 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setError(''); // Clear the error if valid postcodes are provided
   }
 
+  // Validate fuelEfficiency and yearlyInsurance fields
+  if (isNaN(Number(formData.fuelEfficiency)) || isNaN(Number(formData.yearlyInsurance))) {
+    setError('Fuel efficiency and yearly insurance must be numeric values.');
+    return;
+  } else {
+    setError(''); // Clear the error if fuelEfficiency and yearlyInsurance are numeric
+  }
+
   try {
     const response = await axios.post(process.env.REACT_APP_API_URL!, formData);
     setResponseMessage(response.data);
