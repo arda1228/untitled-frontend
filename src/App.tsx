@@ -36,27 +36,35 @@ const App: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    // Check if the startingPoint and destination are valid postcodes
-    const isStartingPointValid = await validatePostcode(formData.startingPoint);
-    const isDestinationValid = await validatePostcode(formData.destination);
+  // Check if required fields are filled
+  if (!formData.carSize || !formData.fuelType || !formData.startingPoint || !formData.destination) {
+    setError('Please fill in all required fields.');
+    return;
+  } else {
+    setError(''); // Clear the error if all required fields are filled
+  }
 
-    if (!isStartingPointValid || !isDestinationValid) {
-      setError('Please enter valid postcodes for starting point and destination.');
-      return;
-    } else {
-      setError(''); // Clear the error if valid postcodes are provided
-    }
+  // Check if the startingPoint and destination are valid postcodes
+  const isStartingPointValid = await validatePostcode(formData.startingPoint);
+  const isDestinationValid = await validatePostcode(formData.destination);
 
-    try {
-      const response = await axios.post(process.env.REACT_APP_API_URL!, formData);
-      setResponseMessage(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  if (!isStartingPointValid || !isDestinationValid) {
+    setError('Please enter valid postcodes for starting point and destination.');
+    return;
+  } else {
+    setError(''); // Clear the error if valid postcodes are provided
+  }
+
+  try {
+    const response = await axios.post(process.env.REACT_APP_API_URL!, formData);
+    setResponseMessage(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const handleToggleAdvancedOptions = () => {
     setShowAdvancedOptions((prevShowAdvancedOptions) => !prevShowAdvancedOptions);
