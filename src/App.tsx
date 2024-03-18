@@ -214,28 +214,26 @@ const App: React.FC = () => {
 
       {/* Toggle button for the footer */}
       <button className="toggle-footer-button" onClick={handleToggleFooter}>
-        {showFooter ? 'Close ▲' : 'How did we get these estimates? ▼'}
+        {showFooter ? 'Close' : 'Help ▲'}
       </button>
 
       {/* Footer */}
       {showFooter && (
         <footer className={showFooter ? 'footer' : 'footer-hidden'}>
           <p>
+            <strong>Why isn't the submit button working?</strong>
+            <br />
+            Unfortunately, the API endpoint is not available at the moment. Please refresh and try again.
+            <br />
+            <br />
             <strong>Estimate Information</strong>
             <br />
             This web application estimates the cost of a car journey based on the car size, fuel type,
             starting and destination postcodes, fuel efficiency, and yearly insurance price.
-            <br />
-            <br />
-            The application uses the following formula to estimate the cost of the journey by car:
-            <br />
-            <br />
             <strong>
-              Cost (£) = (Fuel Needed * Fuel Price (£/Litre)) + (Yearly Insurance (£) / 365) + (MOT Price (£) / 365)
+              Driving Cost (£) = (Fuel Needed * Fuel Price (£/Litre)) + (Yearly Insurance (£) / 365) + (MOT Price (£) / 365)
               + (Road Tax (£) / 365) + (Depreciation (£) / 365)
-
             </strong>
-            <br />
             <br />
             Where:
             <br />
@@ -251,42 +249,21 @@ const App: React.FC = () => {
             <br />
             <strong>Depreciation</strong> is the yearly depreciation price, which is set to a default value of 15% (the average yearly depreciation) of £17,641 (the average car price).
             <br />
-
-
-            <br />
-            The application uses the following formula to estimate the cost of the journey by public transport:
-            <br />
             <br />
             <strong>
-              Cost (£) = Driving Distance (KM) * 0.175
+              Public Transport Cost (£) = Driving Distance (KM) * 0.175
             </strong>
-            <br />
             <br />
             Where:
             <br />
             <strong>Driving Distance</strong> is the driving distance between the starting and destination postcodes, measured by the <a href="https://travelco2.com/documentation">CO2 API</a>. The cost is calculated by multiplying the driving distance by 0.175, which was estimated as the average cost per kilometre for public transport in the UK.
-            <br />
-
 
             <br />
             The application uses the <a href="https://travelco2.com/documentation">CO2 API</a> to estimate the emissions of the journey by public transport compared to driving.
-            <br />
-
-
-            <br />
-            The application uses the <a href="https://postcodes.io/">Postcodes.io</a> API to validate
-            the starting and destination postcodes and to calculate the distance between the
-            postcodes.
-            <br />
-            The application uses the <a href="https://api.sainsburys.co.uk/v1/exports/latest/fuel_prices_data.json">Sainsbury's Fuel Price API</a> to get the
-            current fuel price for the selected fuel type.
-
-            <br />
 
             <br />
             <strong>Author:</strong> Arda Dogan, Loughborough University
             <br />
-
           </p>
           <button className="close-footer-button" onClick={handleToggleFooter}>
             Close &#10006;
