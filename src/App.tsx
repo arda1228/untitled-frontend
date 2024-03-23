@@ -221,21 +221,22 @@ const App: React.FC = () => {
       {showFooter && (
         <footer className={showFooter ? 'footer' : 'footer-hidden'}>
           <p>
-            <strong>Why isn't the submit button working?</strong>
+            <strong><u>Why isn't the submit button working?</u></strong>
             <br />
             Unfortunately, the API endpoint is not available at the moment. Please refresh and try again.
             <br />
             <br />
-            <strong>Estimate Information</strong>
+            <strong><u>Estimate Information</u></strong>
             <br />
             This web application estimates the cost of a car journey based on the car size, fuel type,
             starting and destination postcodes, fuel efficiency, and yearly insurance price.
+            <br />
+            <br />
             <strong>
               Driving Cost (£) = (Fuel Needed * Fuel Price (£/Litre)) + (Yearly Insurance (£) / 365) + (MOT Price (£) / 365)
               + (Road Tax (£) / 365) + (Depreciation (£) / 365)
             </strong>
             <br />
-            Where:
             <br />
             <strong>Fuel Needed</strong> is the driving distance between the starting and destination postcodes, measured by the <a href="https://travelco2.com/documentation">CO2 API</a>, divided by the fuel efficiency (which can be changed in the advanced options) in kilometers per litre or kWh, depending on the fuel type and car size.
             <br />
@@ -254,13 +255,10 @@ const App: React.FC = () => {
               Public Transport Cost (£) = Driving Distance (KM) * 0.175
             </strong>
             <br />
-            Where:
             <br />
             <strong>Driving Distance</strong> is the driving distance between the starting and destination postcodes, measured by the <a href="https://travelco2.com/documentation">CO2 API</a>. The cost is calculated by multiplying the driving distance by 0.175, which was estimated as the average cost per kilometre for public transport in the UK.
-
             <br />
             The application uses the <a href="https://travelco2.com/documentation">CO2 API</a> to estimate the emissions of the journey by public transport compared to driving.
-
             <br />
             <strong>Author:</strong> Arda Dogan, Loughborough University
             <br />
